@@ -3,7 +3,7 @@
 link https://tranchau1991.github.io/kineticjs/
 
 
-
+```
 <div id="container"></div>
 
 <button onclick="run();">add group</button>
@@ -83,6 +83,6 @@ var customShape = new Kinetic.Shape({
 textGroup.add(customShape);
 layer.draw();
 </script>
-
+```
 
 
