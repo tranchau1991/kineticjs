@@ -1,7 +1,8 @@
-## Welcome to Pages :skull:
+## Welcome to Pages :skull: 
 
 link :thumbsup: https://tranchau1991.github.io/kineticjs/
 
+/play 56k
 
 ```
 <div id="container"></div>
