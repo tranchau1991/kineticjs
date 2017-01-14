@@ -1,6 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome to Pages :skull:
 
-link https://tranchau1991.github.io/kineticjs/
+link :thumbsup: https://tranchau1991.github.io/kineticjs/
 
 
 ```
