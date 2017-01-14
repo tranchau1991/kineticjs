@@ -2,38 +2,87 @@
 
 link https://tranchau1991.github.io/kineticjs/
 
-You can use the [editor on GitHub](https://github.com/tranchau1991/kineticjs/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+<div id="container"></div>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<button onclick="run();">add group</button>
+<button onclick="run_changefill();">change fill</button>
+<button onclick="run_change_bg();">change background</button>
 
-```markdown
-Syntax highlighted code block
+<button onclick="run_change_something('x');">change x</button>
 
-# Header 1
-## Header 2
-### Header 3
+<div id="message"></div>
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
+<link rel="stylesheet" href="css.css" type="text/css" />
+<script src="jquery.min.js"></script>
+<script src="kinetic-v5.1.0.js"></script>
+<!--script src="edit.js"></script-->
+<!--script src="state2.js"></script-->
+<script>
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 900,
+    height: 500,
+//    fill: 'red',
+//    draggable: true,
+});
+var layer = new Kinetic.Layer({
+    width: 300,
+    height: 300,
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
 
-**Bold** and _Italic_ and `Code` text
+stage.add(layer);
 
-[Link](url) and ![Image](src)
-```
+var textGroup = new Kinetic.Group({
+        x: 50,
+        y: 50,
+		fill:"red",
+        draggable: false,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        }
+    });
+layer.add(textGroup);
+layer.draw();
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+var customShape = new Kinetic.Shape({
+    x: 5,
+    y: 10,
+//  fill: 'red',
+    stroke: 'black',
+	draggable: true,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        },
+    // a Kinetic.Canvas renderer is passed into the drawFunc function
+    drawFunc: function (context) {
+        context.beginPath();
+        context.beginPath();
+        context.rect(188, 100, 200, 100);
+        // context.quadraticCurveTo(300, 100, 260, 170);
+        context.closePath();
+        context.fillStrokeShape(this);
+    }
+});
 
-### Jekyll Themes
+textGroup.add(customShape);
+layer.draw();
+</script>
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/tranchau1991/kineticjs/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
