@@ -1,0 +1,158 @@
+
+
+<div id="container"></div>
+
+<button onclick="run_add_bg();">add bg</button>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/kinetic-v5.1.0.js"></script>
+
+<script>
+
+var g_width = 325;
+var g_height = 500;
+
+
+
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: g_width, //325
+    height: g_height  //500
+});
+
+var layerBgColor = new Kinetic.Layer();
+var layerSolid = new Kinetic.Layer();
+
+var bgColorImageObj = new Image();
+
+
+
+load_case();
+function load_case(){
+
+	//bgColorImageObj.src = "http://192.168.1.50/customcase/wp-content/uploads/2016/12/APIPADMINI_1-1.png";
+	bgColorImageObj.src = '../pics/bg_1_2.png';
+	bgColorImageObj.crossOrigin = "Anonymous";
+	bgColorImageObj.onload = function () {
+		//imgPutOnCanvas('color');
+		productColorImg = new Kinetic.Image({
+			x: 0,
+			y: 0,
+			image: bgColorImageObj,
+			width: g_width,
+			height: g_height,
+			draggable: true,
+		});
+
+		layerBgColor.add(productColorImg);
+		productColorImg.cache();
+		productColorImg.drawHitFromCache();
+
+		stage.add(layerSolid);
+		stage.add(layerBgColor); //case
+	};	
+	
+	
+}
+
+function run_add_bg(){
+	add_bg("","1");
+}
+
+
+function add_bg(url, info) {
+	var bgImageObj;
+	bgImageObj = new Image();
+   
+    var imageName = '';
+    var getCurrentRandom = makeid();
+    imageName = 'customBg_' + getCurrentRandom;
+
+
+    bgImageObj.crossOrigin = "Anonymous";
+
+    bgImageObj.onload = function () {
+		var bg;
+        bg = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: bgImageObj,
+            name: imageName,
+            id: imageName,
+            draggable: true,
+            dragBoundFunc: function (pos) {
+                var X = pos.x;
+                var Y = pos.y;
+                
+                return ({
+                    x: X,
+                    y: Y
+                });                
+            }
+        });
+        var weight_old = parseInt(bg.getWidth());
+        var height_old = parseInt(bg.getHeight());
+        var w_now = g_width;
+        var h_now = height_old * w_now / weight_old;
+        
+        if(h_now<g_height){            
+            h_now = g_height;
+            w_now = weight_old *h_now /height_old;
+        }
+                       
+        bg.setWidth(w_now);
+        bg.setHeight(h_now);
+
+		/*
+        var weight_old = parseInt(bg.getHeight());
+        var height_old = parseInt(bg.getWidth());
+        h_now = g_height;
+        w_now = weight_old * h_now / height_old;
+		*/
+        
+        layerSolid.add(bg);
+        layerSolid.draw();
+		
+    };
+    bgImageObj.src = "http://localhost/customcase/wp-content/plugins/woocommerce-products-designer/public/images/backgrounds/A0020.jpg";
+
+}
+
+</script>
+
+
+<script>
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
