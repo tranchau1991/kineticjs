@@ -1,0 +1,189 @@
+
+
+<div id="container"></div>
+<img id="preview"></img>
+
+<!--button onclick="run();">add group</button>
+<button onclick="run_changefill();">change fill</button>
+<button onclick="run_change_bg();">change background</button>
+
+<button onclick="run_change_something('x');">change x</button-->
+<button onclick="preview_show()">Preview</button>
+
+<div id="message"></div>
+
+
+<link rel="stylesheet" href="css.css" type="text/css" />
+<script src="jquery.min.js"></script>
+<script src="kinetic-v5.1.0.js"></script>
+<!--script src="edit.js"></script-->
+<!--script src="state2.js"></script-->
+<script>
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 300,
+    height: 550,
+//    fill: 'red',
+//    draggable: true,
+});
+var layer = new Kinetic.Layer();
+//bg img
+
+var layer_bg = new Kinetic.Layer();
+
+var imageObj = new Image();
+imageObj.crossOrigin = "Anonymous";
+imageObj.onload = function () {
+	var image = new Kinetic.Image({
+		x: 0,
+		y: 0,
+		image: imageObj,
+		width: 300,
+		height: 500,
+		//draggable: true
+	});
+	layer_bg.add(image);
+	layer_bg.draw();
+};
+imageObj.src = 'pics/bg_1_1.png';
+
+
+var layer_case = new Kinetic.Layer({
+    width: 300,
+    height: 300,
+	
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
+
+//bg case
+var imageObj_case = new Image();
+imageObj_case.src = 'pics/bg_1_2.png';
+imageObj_case.crossOrigin = "Anonymous";
+imageObj_case.onload = function () {
+	image_hehe = new Kinetic.Image({
+		x: 0,
+		y: 0,
+		image: imageObj_case,
+		width: 300,
+		height: 500,		
+	});
+	
+	layer_case.add(image_hehe);
+	layer_case.draw();
+	
+	//layerBgColor.add(productColorImg);
+	image_hehe.cache();
+	image_hehe.drawHitFromCache();
+	
+	stage.add(layer_bg);
+	stage.add(layer);
+	stage.add(layer_case);
+};
+
+
+
+
+//element dopwn
+
+var textGroup = new Kinetic.Group({
+        x: 0,
+        y: 0,
+		//fill:"red",		
+        draggable: false,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        }
+});
+layer.add(textGroup);
+layer.draw();
+
+var customShape = new Kinetic.Shape({
+    x: 0,
+    y: 0,
+	fill: '#cdcbcc',
+    stroke: 'black',
+	draggable: true,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        },
+    // a Kinetic.Canvas renderer is passed into the drawFunc function
+    drawFunc: function (context) {
+        
+		context.beginPath();
+        context.beginPath();
+        context.rect(50, 35, 203, 150);
+        context.closePath();
+        context.fillStrokeShape(this);
+		
+		/*
+		context.beginPath();
+		context.moveTo(20, 10);
+		context.lineTo(80, 10);
+		context.quadraticCurveTo(90, 10, 90, 20);
+		context.lineTo(90, 80);
+		context.quadraticCurveTo(90, 90, 80, 90);
+		context.lineTo(20, 90);
+		context.quadraticCurveTo(10, 90, 10, 80);
+		context.lineTo(10, 20);
+		context.quadraticCurveTo(10, 10, 20, 10);
+		context.stroke();
+		*/
+
+    }
+});
+
+textGroup.add(customShape);
+
+var customShape_1 = new Kinetic.Shape({
+    x: -1,
+    y: 0,
+  fill: '#cdcbcc',
+    stroke: 'black',
+	draggable: true,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        },
+    // a Kinetic.Canvas renderer is passed into the drawFunc function
+    drawFunc: function (context) {
+        context.beginPath();
+        context.beginPath();
+        context.rect(50, 320, 205, 148);
+        // context.quadraticCurveTo(300, 100, 260, 170);
+        context.closePath();
+        context.fillStrokeShape(this);
+    }
+});
+
+textGroup.add(customShape_1);
+layer.draw();
+
+function preview_show(){
+	//alert(1);
+	stage.toDataURL({
+        callback: function (dataUrl) {
+			console.log(stage.toJSON());
+            document.getElementById("preview").src=dataUrl;
+        }
+    }, true);
+	
+}
+</script>
+
+

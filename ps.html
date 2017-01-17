@@ -1,0 +1,102 @@
+
+
+<div id="container"></div>
+<img id="preview"></img>
+
+<button onclick="add_bg();">add_bg</button>
+<button onclick="preview_show()">Preview</button>
+
+<div id="message"></div>
+
+
+<link rel="stylesheet" href="css.css" type="text/css" />
+<script src="jquery.min.js"></script>
+<script src="kinetic-v5.1.0.js"></script>
+<!--script src="edit.js"></script-->
+<!--script src="state2.js"></script-->
+<script>
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 300,
+    height: 550,
+//    fill: 'red',
+//    draggable: true,
+});
+
+//bg img
+
+
+
+
+
+var layerBgColor = new Kinetic.Layer();
+var layerSolid = new Kinetic.Layer();
+
+//bg case
+
+
+var bgColorImageObj = new Image();
+
+load_case();
+
+function load_case(){
+	
+	//bgColorImageObj.src = 'http://192.168.1.50/customcase/wp-content/uploads/2016/12/APIPADMINI_1-1.png';
+	bgColorImageObj.src = 'pics/bg_1_2.png';
+	bgColorImageObj.crossOrigin = "Anonymous";
+	bgColorImageObj.onload = function () {
+	//Product_case.onload = function () {
+		Product_case = new Kinetic.Image({
+			x: 0,
+			y: 0,
+			image: bgColorImageObj,
+			width: 300,
+			height: 500,	
+	
+		});
+					
+	layerBgColor.add(Product_case);	
+	Product_case.cache();
+	Product_case.drawHitFromCache();
+		
+	stage.add(layerSolid);
+	stage.add(layerBgColor);
+
+	};
+	
+
+}
+
+function add_bg(){
+	var imageObj = new Image();
+	imageObj.crossOrigin = "Anonymous";
+	imageObj.onload = function () {
+		var image = new Kinetic.Image({
+			x: 0,
+			y: 0,
+			image: imageObj,
+			width: 300,
+			height: 500,
+			draggable: true
+
+		});
+		layerSolid.add(image);
+		layerSolid.draw();
+	};
+	imageObj.src = 'pics/bg_1_1.png';
+}
+
+
+function preview_show(){
+	//alert(1);
+	stage.toDataURL({
+        callback: function (dataUrl) {
+			console.log(stage.toJSON());
+            document.getElementById("preview").src=dataUrl;
+        }
+    }, true);
+	
+}
+</script>
+
+
