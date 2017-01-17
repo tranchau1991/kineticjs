@@ -1,0 +1,502 @@
+
+
+<div id="container"></div>
+
+<button onclick="run_add_bg();">add bg</button>
+
+<!--button onclick="run();">add group</button>
+<button onclick="run_changefill();">change fill</button>
+<button onclick="run_change_bg();">change background</button>
+
+<button onclick="run_change_something('x');">change x</button>
+<button onclick="preview_show()">Preview</button>
+
+<div id="message"></div-->
+
+
+<!--link rel="stylesheet" href="css.css" type="text/css" /-->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/kinetic-v5.1.0.js"></script>
+<!--script src="edit.js"></script-->
+<!--script src="state2.js"></script-->
+<!--script>
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 300,
+    height: 550,
+//    fill: 'red',
+//    draggable: true,
+});
+var layer = new Kinetic.Layer({
+    width: 300,
+    height: 300,
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
+//bg img
+
+var layer_bg = new Kinetic.Layer({
+    width: 300,
+    height: 300,
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
+
+var imageObj = new Image();
+imageObj.crossOrigin = "Anonymous";
+imageObj.onload = function () {
+	var image = new Kinetic.Image({
+		x: 0,
+		y: 0,
+		image: imageObj,
+		width: 300,
+		height: 500
+	});
+	layer_bg.add(image);
+	layer_bg.draw();
+};
+imageObj.src = '../pics/bg_1_1.png';
+
+
+var layer_case = new Kinetic.Layer({
+    width: 300,
+    height: 300,
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
+
+//bg case
+var imageObj_case = new Image();
+imageObj_case.crossOrigin = "Anonymous";
+imageObj_case.onload = function () {
+	var image = new Kinetic.Image({
+		x: 0,
+		y: 0,
+		image: imageObj_case,
+		width: 300,
+		height: 500
+	});
+	layer_case.add(image);
+	layer_case.draw();
+};
+imageObj_case.src = '../pics/bg_1_2.png';
+
+stage.add(layer_bg);
+stage.add(layer);
+stage.add(layer_case);
+
+
+//element dopwn
+
+var textGroup = new Kinetic.Group({
+        x: 0,
+        y: 0,
+		//fill:"red",		
+        draggable: false,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        }
+    });
+layer.add(textGroup);
+layer.draw();
+
+var customShape = new Kinetic.Shape({
+    x: 0,
+    y: 0,
+	fill: '#cdcbcc',
+    stroke: 'black',
+	draggable: true,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        },
+    // a Kinetic.Canvas renderer is passed into the drawFunc function
+    drawFunc: function (context) {
+        
+		context.beginPath();
+        context.beginPath();
+        context.rect(50, 35, 203, 150);
+        context.closePath();
+        context.fillStrokeShape(this);
+		
+		/*
+		context.beginPath();
+		context.moveTo(20, 10);
+		context.lineTo(80, 10);
+		context.quadraticCurveTo(90, 10, 90, 20);
+		context.lineTo(90, 80);
+		context.quadraticCurveTo(90, 90, 80, 90);
+		context.lineTo(20, 90);
+		context.quadraticCurveTo(10, 90, 10, 80);
+		context.lineTo(10, 20);
+		context.quadraticCurveTo(10, 10, 20, 10);
+		context.stroke();
+		*/
+
+    }
+});
+
+textGroup.add(customShape);
+
+var customShape_1 = new Kinetic.Shape({
+    x: -1,
+    y: 0,
+  fill: '#cdcbcc',
+    stroke: 'black',
+	draggable: true,
+        dragBoundFunc: function (pos) {
+            var X = pos.x;
+            var Y = pos.y;
+            return ({
+                x: X,
+                y: Y
+            });
+        },
+    // a Kinetic.Canvas renderer is passed into the drawFunc function
+    drawFunc: function (context) {
+        context.beginPath();
+        context.beginPath();
+        context.rect(50, 320, 205, 148);
+        // context.quadraticCurveTo(300, 100, 260, 170);
+        context.closePath();
+        context.fillStrokeShape(this);
+    }
+});
+
+textGroup.add(customShape_1);
+layer.draw();
+
+function preview_show(){
+	//alert(1);
+	stage.toDataURL({
+        callback: function (dataUrl) {
+			console.log(stage.toJSON());
+            document.getElementById("preview").src=dataUrl;
+        }
+    }, true);
+	
+}
+
+</script-->
+
+<script>
+//var ary = []; //list background neu nhieu
+//var text_ary = [];
+//var id_bg = '';
+//var data_bg = ""; //1 back ground cupoi cung
+//var sku = '';
+//var rotation_bg = 0;
+//var view_by_height = new Array("0", "0");
+//var view_by_width = new Array("0", "0");
+//var number_zoom=0;
+//var current_dirty = 0; //goc xoay
+//var filter_bg='';
+//var is_edit_product=false;
+var logowidth;
+var logoheight;
+
+var g_width = 325;
+var g_height = 500;
+
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: g_width, //325
+    height: g_height  //500
+});
+
+//var layer = new Kinetic.Layer();
+var layerBgColor = new Kinetic.Layer();
+var layerSolid = new Kinetic.Layer();
+
+//var solidImageObj = new Image();
+var bgColorImageObj = new Image();
+//var imageObj = new Image();
+
+//var productSolidImg;
+//var productImg;
+//var productColorImg;
+
+
+//var logo;
+var minX;
+var maxX;
+var minY;
+var maxY;/*
+var minTextX;
+var maxTextX;
+var minTextY;
+var maxTextY;
+var minBgX;
+var maxBgX;
+var minBgY;
+var maxBgY;
+*/
+
+//solidImageObj.src = "http://192.168.1.50/customcase/wp-content/uploads/2016/12/APIPADMINI_1-1.png";
+bgColorImageObj.src = "http://192.168.1.50/customcase/wp-content/uploads/2016/12/APIPADMINI_1-1.png";
+//imageObj.src = "http://192.168.1.50/customcase/wp-content/uploads/2016/12/APIPADMINI_1-1.png";
+
+//solidImageObj.onload = function () {
+    //imgPutOnCanvas('solid');
+//};
+bgColorImageObj.onload = function () {
+    imgPutOnCanvas('color');
+};
+//imageObj.onload = function () {
+   // imgPutOnCanvas('transparent');
+//};
+
+function imgPutOnCanvas(type) {
+    /*
+	if (type == 'solid') {
+        productSolidImg = new Kinetic.Image({
+            //x:stage.getWidth()/4,
+            x: 0,
+            y: 0,
+            image: solidImageObj,
+            width: g_width,
+            height: g_height,
+            rotation: 0
+        });
+        layerSolid.add(productSolidImg);
+    } else */
+	//if (type == 'color') {
+        productColorImg = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: bgColorImageObj,
+            width: g_width,
+            height: g_height,
+			//draggable: true,
+        });
+
+        layerBgColor.add(productColorImg);
+        productColorImg.cache();
+        productColorImg.drawHitFromCache();
+       // layerBgColor.drawHit();
+   // }
+	/*
+	else if (type == 'transparent') {
+        productImg = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: imageObj,
+            width: g_width,
+            height: g_height
+        });
+
+        layer.add(productImg);
+        productImg.cache();
+        productImg.drawHitFromCache();
+        layer.drawHit();
+    }
+	*/
+
+    stage.add(layerSolid);
+    stage.add(layerBgColor);
+   // stage.add(layer);
+}
+function run_add_bg(){
+	add_bg("","1");
+}
+
+
+function add_bg(url, info) {
+	var bgImageObj;
+	bgImageObj = new Image();
+    //number_zoom=0;
+    //jQuery('#zoom_number').val(number_zoom);
+    //rotation_bg=0;
+    //jQuery('#rotation_number').val(rotation_bg);
+    //if (ary) {
+    //    flip_curent_y = 1;
+    //    flip_curent = 1;
+        //rotation_bg = 0;
+   //     current_dirty = 0;
+        //remove_current_bg_item();
+   // }
+
+
+   // var logoObj = {};
+   
+    //productColorImg.setFill('');
+   // productColorImg.cache();
+    //productColorImg.drawHitFromCache();
+    //layerBgColor.drawHit();
+    //layerBgColor.draw();
+
+    var imageName = '';
+    var getCurrentRandom = makeid();
+    imageName = 'customBg_' + getCurrentRandom;
+
+
+    bgImageObj.crossOrigin = "Anonymous";
+
+    bgImageObj.onload = function () {
+		var bg;
+        bg = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: bgImageObj,
+            //width:productImg.getWidth(),
+            //height:productImg.getHeight(),
+            name: imageName,
+            id: imageName,
+            draggable: true,
+            dragBoundFunc: function (pos) {
+                var X = pos.x;
+                var Y = pos.y;
+                /*
+				if (X < minX) {
+                    X = minX;
+                }
+                if (X > maxX) {
+                    X = maxX;
+                }
+                if (Y < minY) {
+                    Y = minY;
+                }
+                if (Y > maxY) {
+                    Y = maxY;
+                }
+				*/
+                return ({
+                    x: X,
+                    y: Y
+                });                
+            }
+        });
+        var weight_old = parseInt(bg.getWidth());
+        var height_old = parseInt(bg.getHeight());
+        var w_now = g_width;
+        var h_now = height_old * w_now / weight_old;
+        
+        if(h_now<g_height){            
+            h_now = g_height;
+            w_now = weight_old *h_now /height_old;
+        }
+                
+        //view_by_width[0] = w_now;
+        //view_by_width[1] = h_now;              
+        bg.setWidth(w_now);
+        bg.setHeight(h_now);
+
+        var weight_old = parseInt(bg.getHeight());
+        var height_old = parseInt(bg.getWidth());
+        h_now = g_height;
+        w_now = weight_old * h_now / height_old;
+        //view_by_height[0] = w_now;
+        //view_by_height[1] = h_now;
+        //return;
+        
+        layerSolid.add(bg);
+        layerSolid.draw();
+		/*
+
+      //  minBgX = productImg.getX();
+      //  maxBgX = productImg.getX() + productImg.getWidth() - bg.getWidth();
+      //  minBgY = productImg.getY();
+      //  maxBgY = productImg.getY() + productImg.getHeight() - bg.getHeight();
+        bg.on('dragstart', function () {
+
+           // var parseId = this.getAttr('id').split('_')[0];
+           // jQuery('.pd_control_panel_main').find('.pd_selected_menu_div').removeClass('pd_selected_menu_div').addClass('pd_menu_div');
+          //  if (parseId == 'customBg') {
+
+          //  }
+          //  jQuery('#hfSelectedbgItemId').val(this.getAttr('id'));
+
+        });
+        bg.on('dragend', function ( ) {
+           // var parseId = this.getAttr('id').split('_')[0];
+           // jQuery('.pd_control_panel_main').find('.pd_selected_menu_div').removeClass('pd_selected_menu_div').addClass('pd_menu_div');
+           // if (parseId == 'customBg') {
+                //chec_bg();
+
+            //}
+        });
+
+        bg.on('click', function () {
+           // var parseId = this.getAttr('id').split('_')[0];
+            //jQuery('.pd_control_panel_main').find('.pd_selected_menu_div').removeClass('pd_selected_menu_div').addClass('pd_menu_div');
+           // if (parseId == 'customBg') {
+
+
+
+          //  }
+            //jQuery('#hfSelectedbgItemId').val(this.getAttr('id'));
+
+        });
+        bg.on('mouseover', function () {
+            document.body.style.cursor = 'pointer';
+        });
+        bg.on('mouseout', function () {
+            document.body.style.cursor = 'default';
+        });
+		*/
+    };
+
+    // drawImage_effect(bgImageObj);
+
+//    bgImageObj.src = url;
+   // bgImageObj.src = "http://192.168.1.50/customcase/wp-content/plugins/woocommerce-products-designer/public/images/backgrounds/A0020.jpg";
+    bgImageObj.src = "http://localhost/customcase/wp-content/plugins/woocommerce-products-designer/public/images/backgrounds/A0020.jpg";
+   // jQuery('#hfSelectedbgItemId').val('');
+    //jQuery('#hfSelectedbgItemId').val('customBg_' + getCurrentRandom);
+    //logoObj['id'] = getCurrentRandom;
+   // logoObj['imgSrc'] = url;
+   // ary.push(logoObj);
+  //  data_bg = url;
+
+
+}
+</script>
+
+
+<script>
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
