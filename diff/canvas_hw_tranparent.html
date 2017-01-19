@@ -1,0 +1,98 @@
+jQuery( window ).load(function() {	
+	create_new_canvas(function(a){
+		get_hw_case_transparent();
+	});
+	
+})
+
+function create_new_canvas(callback){
+	var tem_canvas_1 = document.createElement('canvas');
+	tem_canvas_1.id = "canvas_case";
+	tem_canvas_1.width = g_width,
+	tem_canvas_1.height = g_height;
+	tem_canvas_1.style.zIndex = 4;
+	//canvas_1.style.position = "absolute";
+	tem_canvas_1.style.border = "1px solid";
+	tem_canvas_1.style.margin = "0 0 0 10px";  
+	document.getElementById("container_2").appendChild(tem_canvas_1);
+	
+	var url_nn = jQuery('.pd_products_img_left_selected').attr('img-url');
+	//var url_nn = "http://192.168.1.50/customcase/wp-content/uploads/2017/01/bg_1_2.png";
+	
+	var canvas = document.getElementById("canvas_case");
+	var ctx = canvas.getContext("2d");
+	var image = document.createElement("img");
+	
+	var sset_w=g_width;
+	var sset_h=g_height;
+	
+	image.src = url_nn;
+	image.onload = function () {
+		//var imgSize = calculateAspectRatioFit(image.width, image.height, canvas.clientWidth, canvas.clientHeight);			
+		//img_w_zoom=imgSize.width;
+		//img_h_zoom=imgSize.height;
+		//first_vl_w_img=imgSize.width;
+		//first_vl_h_img=imgSize.height;
+		//ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.drawImage(image, 0, 0, sset_w, sset_h);
+		callback(1);
+	}
+	
+	//var productImg;
+}
+function get_hw_case_transparent(){
+	var arr_ = new Array();
+	var arr1_ = new Array();
+	
+	//var canvas = document.getElementById("canvas_case"); //set tai 0
+	var cavn_now_ge= jQuery( "#canvas_case" )[0];
+	console.log(cavn_now_ge);
+	//console.log("w="+stage.getWidth());
+	for ( var xx = 0 ; xx < stage.getWidth(); xx ++)
+	{
+		var x = xx;
+		var y =stage.getHeight()/2;			
+		x1 = parseFloat(x);
+		y1 = parseFloat(y);
+		
+		var coord = "x=" + x1 + ", y=" + y1;
+		var c = cavn_now_ge.getContext('2d');
+		var p = c.getImageData(x1, y1, 1, 1).data;
+		var hex = ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);		
+		if(hex==000000){
+			arr_.push(x);
+		}
+		console.log("color="+hex);
+	}
+	
+	//console.log("h="+stage.getHeight());
+	for ( var yy = 0 ; yy < stage.getHeight(); yy ++)
+	{
+		//checkcase.fire('checkcaseY', {y: yy});
+		var x = stage.getWidth()/2;
+		var y = yy;
+				 
+		x1 = parseFloat(x);
+		y1 = parseFloat(y);
+
+		var coord = "x=" + x1 + ", y=" + y1;
+		var c = cavn_now_ge.getContext('2d');
+		var p = c.getImageData(x1, y1, 1, 1).data;
+		var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+		if(p[0] ==0){
+			arr1_.push(y);
+		}
+	}
+	
+	var min1_ = Math.min.apply(null, arr1_);
+	var max1_ = Math.max.apply(null, arr1_);
+	var caseheight_ = max1_ - min1_;
+	var caseY_ = max1_;
+
+	//console.log("arr_="+arr_);
+	var min_ = Math.min.apply(null, arr_);
+	var max_ = Math.max.apply(null, arr_);
+	var casewidth_ = max_ - min_;
+	var caseX_ = min_;
+	console.log(caseheight_+"__"+casewidth_);
+}
