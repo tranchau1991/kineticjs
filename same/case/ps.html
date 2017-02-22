@@ -1,0 +1,481 @@
+
+<div style="float:left">
+	<div id="container"></div>
+	<img id="preview"></img>
+
+	<!--button onclick="run();">add group</button>
+	<button onclick="run_changefill();">change fill</button>
+	<button onclick="run_change_bg();">change background</button>
+
+	<button onclick="run_change_something('x');">change x</button-->
+	<button onclick="preview_show()">Preview</button>
+	<button onclick="fill_img()">fill_img</button>
+
+	<div id="message"></div>
+</div>
+<div style="float:right" class="c-right">
+	<!--canvas id="myCanvas" width="205" height="148" style=" border: 1px solid; "> </canvas-->
+
+	<br>
+	<button onclick="tostring('canvas')">to string</button>
+	<button onclick="tostring('canvas_1')">to string 1</button>
+
+	<button id="clockwise">Rotate right</button>
+	<button id="counterclockwise">Rotate left</button>
+	<button id="zoomplus">zoom+</button>
+	<button id="zoompsub">zoom-</button>
+
+	<button onclick="change_img('left')">left</button>
+	<button onclick="change_img('right')">right</button>
+	<button onclick="change_img('down')">down</button>
+	<button onclick="change_img('up')">up</button>
+	<br>
+	<br/>
+
+	<input type="file" id="selectedImage" />
+	<br>
+	<input type="file" id="selectedImage_1" />cai2
+	<br>
+	<input type="file" id="selectedImage_2" />cai3
+	<br>
+	<input type="file" id="selectedImage_3" />cai4
+	<br>
+	<input type="file" id="selectedImage_4" />cai5
+</div>
+
+<script>
+	//script run first
+	function makeid() {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (var i = 0; i < 5; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		return text;
+	}
+</script>
+
+
+<link rel="stylesheet" href="css.css" type="text/css" />
+<script src="jquery.min.js"></script>
+<script src="kinetic-v5.1.0.js"></script>
+
+<!--script src="edit.js"></script-->
+<!--script src="state2.js"></script-->
+<script>
+var stage = new Kinetic.Stage({
+    container: 'container',
+    width: 300,
+    height: 500,
+//    fill: 'red',
+//    draggable: true,
+});
+var layer = new Kinetic.Layer();
+//bg img
+
+var layer_bg = new Kinetic.Layer();
+
+var imageObj = new Image();
+imageObj.crossOrigin = "Anonymous";
+imageObj.onload = function () {
+	var image = new Kinetic.Image({
+		x: 0,
+		y: 0,
+		image: imageObj,
+		width: 300,
+		height: 500,
+		//draggable: true
+	});
+	//layer_bg.add(image);
+	//layer_bg.draw();
+};
+//imageObj.src = 'pics/bg_1_1.png';
+
+
+var layer_case = new Kinetic.Layer({
+    width: 300,
+    height: 500,
+
+    //fill: 'red',
+    //draggable: true,
+    //fillEnabled: true,
+});
+
+//bg case
+add_bg_case('pics/bg.png',function(a){
+	add_bg_case('pics/case.png',function(a){});
+});
+
+
+function add_bg_case(link_img_bg,callback){
+	var imageObj_case = new Image();
+	imageObj_case.src = link_img_bg;
+	imageObj_case.crossOrigin = "Anonymous";
+	imageObj_case.onload = function () {
+		image_hehe = new Kinetic.Image({
+			x: 0,
+			y: 0,
+			image: imageObj_case,
+			width: 300,
+			height: 500,		
+		});
+		
+		layer_case.add(image_hehe);
+		layer_case.draw();
+		
+		//layerBgColor.add(productColorImg);
+		image_hehe.cache();
+		image_hehe.drawHitFromCache();
+		
+		
+		//stage.add(layer);
+		stage.add(layer_case);
+		callback(1);
+	};
+}
+stage.add(layer_bg);
+stage.add(layer);
+
+
+var glb_idshape_current;
+var customShape_1;
+var customShape;
+
+var x_shap1=0;
+var y_shap1=0;
+
+function create_shape(){
+	var id_at=_list_id_canvas[0];
+	console.log(id_at+"__now");
+	customShape = new Kinetic.Shape({
+		x: 0,
+		y: 0,
+		id: 'shape_'+id_at,
+		name: 'shape_'+id_at,
+		//fill: '#cdcbcc',
+		//stroke: 'black',
+		draggable: true,
+			dragBoundFunc: function (pos) {
+				var X = pos.x;
+				var Y = pos.y;
+				x_shap1=X;
+				y_shap1=Y;
+				return ({
+					x: X,
+					y: Y
+				});
+			},
+		// a Kinetic.Canvas renderer is passed into the drawFunc function
+		drawFunc: function (context) {
+
+			context.beginPath();
+			context.beginPath();
+			//console.log("hehe_x_"+_obj_list_canvas[_list_id_canvas[0]].x);
+			//console.log("hehe_y_"+_obj_list_canvas[_list_id_canvas[0]].y);
+			//console.log("hehe_width_"+_obj_list_canvas[_list_id_canvas[0]].width);
+			//console.log("hehe_height_"+_obj_list_canvas[_list_id_canvas[0]].height);
+			//context.rect(67, 159, 63, 68);
+			//console.log("tau"+_obj_list_canvas[_list_id_canvas[0]].x);			
+			context.rect(_obj_list_canvas[_list_id_canvas[0]].x, _obj_list_canvas[_list_id_canvas[0]].y,
+			_obj_list_canvas[_list_id_canvas[0]].width, _obj_list_canvas[_list_id_canvas[0]].height);
+			context.closePath();
+			context.fillStrokeShape(this);		
+		}
+	});
+	customShape.on('dragstart', function ( ) {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];
+	});
+	customShape.on('dragend', function (info ) {
+		p1_change_img(canvas,x_shap1,y_shap1);	
+		customShape.setX(0);
+		customShape.setY(0);
+		//layer.draw();
+		//chec_bg();			
+	});
+	customShape.on('click', function () {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];	
+		//alert("x_shap1_"+x_shap1+"__"+y_shap1);
+		//p1_change_img(canvas,x_shap1,y_shap1);
+	});
+	layer.add(customShape);
+
+	id_at=_list_id_canvas[1];
+	var customShape_1 = new Kinetic.Shape({
+		x: -1,
+		y: 0,
+		//fill: '#cdcbdc',
+		//stroke: 'black',
+		id: 'shape_'+id_at,
+		name: 'shape_'+id_at,
+		draggable: true,
+			dragBoundFunc: function (pos) {
+				var X = pos.x;
+				var Y = pos.y;
+				x_shap1=X;
+				y_shap1=Y;
+				return ({
+					x: X,
+					y: Y
+				});
+			},
+		// a Kinetic.Canvas renderer is passed into the drawFunc function
+		drawFunc: function (context) {
+			context.beginPath();
+			context.beginPath();
+			//context.rect(67, 330, 165, 90);
+			context.rect(_obj_list_canvas[_list_id_canvas[1]].x, _obj_list_canvas[_list_id_canvas[1]].y,_obj_list_canvas[_list_id_canvas[1]].width, _obj_list_canvas[_list_id_canvas[1]].height);
+			// context.quadraticCurveTo(300, 100, 260, 170);
+			context.closePath();
+			context.fillStrokeShape(this);
+		}
+	});
+	customShape_1.on('dragstart', function ( ) {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];
+	});
+	customShape_1.on('dragend', function (info ) {	
+		p1_change_img(canvas_1,x_shap1,y_shap1);	
+		customShape_1.setX(0);
+		customShape_1.setY(0);
+		//layer.draw();
+		//chec_bg();			
+	});
+	customShape_1.on('click', function () {	
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];	
+	});
+
+	layer.add(customShape_1);
+	
+	//add shape 3str
+	id_at=_list_id_canvas[2];
+	var customShape_2 = new Kinetic.Shape({
+		x: -1,
+		y: 0,
+		//stroke: 'black',
+		id: 'shape_'+id_at,
+		name: 'shape_'+id_at,
+		draggable: true,
+			dragBoundFunc: function (pos) {
+				var X = pos.x;
+				var Y = pos.y;
+				x_shap1=X;
+				y_shap1=Y;
+				return ({
+					x: X,
+					y: Y
+				});
+			},
+		drawFunc: function (context) {
+			context.beginPath();
+			context.beginPath();
+			//context.rect(67, 230, 165, 90);
+			context.rect(_obj_list_canvas[_list_id_canvas[2]].x, _obj_list_canvas[_list_id_canvas[2]].y,_obj_list_canvas[_list_id_canvas[2]].width, _obj_list_canvas[_list_id_canvas[2]].height);
+			context.closePath();
+			context.fillStrokeShape(this);
+		}
+	});
+	customShape_2.on('dragstart', function ( ) {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];
+	});
+	customShape_2.on('dragend', function (info ) {	
+		p1_change_img(canvas_2,x_shap1,y_shap1);	
+		customShape_2.setX(0);
+		customShape_2.setY(0);
+	});
+	customShape_2.on('click', function () {	
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];	
+	});
+	layer.add(customShape_2);
+	
+	//add shape 4str
+	id_at=_list_id_canvas[3];
+	var customShape_3 = new Kinetic.Shape({
+		x: -1,
+		y: 0,
+		//stroke: 'black',
+		id: 'shape_'+id_at,
+		name: 'shape_'+id_at,
+		draggable: true,
+			dragBoundFunc: function (pos) {
+				var X = pos.x;
+				var Y = pos.y;
+				x_shap1=X;
+				y_shap1=Y;
+				return ({
+					x: X,
+					y: Y
+				});
+			},
+		drawFunc: function (context) {
+			context.beginPath();
+			context.beginPath();
+			//context.rect(67, 330, 165, 90);
+			context.rect(_obj_list_canvas[_list_id_canvas[3]].x, _obj_list_canvas[_list_id_canvas[3]].y,_obj_list_canvas[_list_id_canvas[3]].width, _obj_list_canvas[_list_id_canvas[3]].height);
+			context.closePath();
+			context.fillStrokeShape(this);
+		}
+	});
+	customShape_3.on('dragstart', function ( ) {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];
+	});
+	customShape_3.on('dragend', function (info ) {	
+		p1_change_img(canvas_3,x_shap1,y_shap1);	
+		customShape_3.setX(0);
+		customShape_3.setY(0);
+	});
+	customShape_3.on('click', function () {	
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];	
+	});
+	layer.add(customShape_3);
+	//add shape 5str
+	id_at=_list_id_canvas[4];
+	var customShape_4 = new Kinetic.Shape({
+		x: -1,
+		y: 0,
+		//stroke: 'black',
+		id: 'shape_'+id_at,
+		name: 'shape_'+id_at,
+		draggable: true,
+			dragBoundFunc: function (pos) {
+				var X = pos.x;
+				var Y = pos.y;
+				x_shap1=X;
+				y_shap1=Y;
+				return ({
+					x: X,
+					y: Y
+				});
+			},
+		drawFunc: function (context) {
+			context.beginPath();
+			context.beginPath();
+			//context.rect(67, 330, 165, 90);
+			/*
+			console.log("chau");
+			console.log(_obj_list_canvas[_list_id_canvas[4]].x);
+			*/
+			context.rect(_obj_list_canvas[_list_id_canvas[4]].x, _obj_list_canvas[_list_id_canvas[4]].y,_obj_list_canvas[_list_id_canvas[4]].width, _obj_list_canvas[_list_id_canvas[4]].height);
+			context.closePath();
+			context.fillStrokeShape(this);
+		}
+	});
+	customShape_4.on('dragstart', function ( ) {
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];
+	});
+	customShape_4.on('dragend', function (info ) {	
+		p1_change_img(canvas_4,x_shap1,y_shap1);	
+		customShape_4.setX(0);
+		customShape_4.setY(0);
+	});
+	customShape_4.on('click', function () {	
+		var parse_name = this.getAttr('id').split('_')[0];
+		if(parse_name=='shape'){
+			//show function for edit shape
+		}
+		glb_idshape_current= this.getAttr('id').split('_')[1];	
+	});
+	layer.add(customShape_4);
+	//alert("helo");
+	layer.draw();
+}
+
+function fill_img() {
+    var imageObj_now = new Image();
+	//if(!img_string_1){
+	//	imageObj_now.src = 'pics/a1_fil.jpg';
+	//}else{
+	imageObj_now.src=img_string_1;
+		//console.log(img_string_1);
+	//}	
+    imageObj_now.onload = function () {
+		var a = layer.get('.shape_' + glb_idshape_current);
+		//alert(a+"__"+glb_idshape_current);
+		a.fillPatternImage(imageObj_now);
+		a.fillPatternScaleX(1);//can set 1 scaleX,Y moi fillPatternImage dc
+		a.fillPatternScaleY(1);
+		
+		var x_set = _obj_list_canvas[glb_idshape_current].x;
+		var y_set = _obj_list_canvas[glb_idshape_current].y;		
+		
+		a.fillPatternX(x_set);
+		a.fillPatternY(y_set);
+		/*
+		if(glb_idshape_current==123){
+			customShape_1.fillPatternImage(imageObj_now);	
+			customShape_1.fillPatternScaleX(1);//can set 1 scaleX,Y moi fillPatternImage dc
+			customShape_1.fillPatternScaleY(1);
+		}else{
+			customShape.fillPatternImage(imageObj_now);	
+			customShape.fillPatternScaleX(1);//can set 1 scaleX,Y moi fillPatternImage dc
+			customShape.fillPatternScaleY(1);
+		}
+		*/        
+		layer.draw();	
+    };   
+    //layer.draw();
+}
+
+</script>
+
+
+<script>
+function p1_change_img(at_canvas,in_x,in_y){
+	//canvas = document.getElementById("canvasimg_"+glb_idshape_current);
+	changexy_img(in_x,in_y);
+	tostring(at_canvas);
+	fill_img();
+}
+</script>
+
+
+
+<script>
+function preview_show(){
+	//alert(1);
+	stage.toDataURL({
+        callback: function (dataUrl) {
+			console.log(stage.toJSON());
+            document.getElementById("preview").src=dataUrl;
+        }
+    }, true);	
+}
+</script>
+
+<script src="canvast_img.js"></script>
+

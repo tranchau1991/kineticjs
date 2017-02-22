@@ -1,0 +1,9 @@
+#content {
+    height: 300px;
+}
+.kineticjs-content{
+    border: 1px solid;
+}
+canvas{
+    border: 1px solid;
+}
